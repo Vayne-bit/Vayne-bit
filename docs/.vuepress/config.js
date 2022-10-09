@@ -1,12 +1,13 @@
 module.exports = {
   title: 'Coder',
+  base: '/cyh/',
   themeConfig: {
     logo: '/image/cola.png',
     nav: require('./nav.js'),
     sidebar: require('./sidebar.js'),
     sidebarDepth: 2,
     smoothScroll: true,
-    repo: 'https://gitee.com/brucecai55520/bruceblog',
+    repo: 'https://github.com/Vayne-bit/Vayne-bit',
     repoLabel: 'Github',
   },
   markdown: {
