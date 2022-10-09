@@ -10,6 +10,11 @@ module.exports = {
     repo: 'https://github.com/Vayne-bit/Vayne-bit',
     repoLabel: 'Github',
   },
+  locales: {
+    '/': {
+      lang: 'zh-CN',
+    }
+  },
   markdown: {
     lineNumbers: true,
   },

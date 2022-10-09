@@ -14,7 +14,7 @@ module.exports = [
           },
           {
             text: 'JavaScript',
-            link: '/note/js/js'
+            link: '/notes/js/js'
           },
         ]
       }
