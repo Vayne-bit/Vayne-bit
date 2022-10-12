@@ -58,7 +58,7 @@ console.log(a);
 
 #### 基础运算符
 
-  - +
+  - \+
     + 可用于数学运算或者字符串拼接
     + 任何数据类型加字符串都等于字符串
   - -、*、/、%、=、()
@@ -97,3 +97,779 @@ console.log(a);
   + ""
   + 0
   + false
+
+#### 三目（三元）运算符（条件运算符）
+
+```javascript
+// 判定条件 ? 条件正确 : 条件错误
+var num = 1 > 0 ? true : false
+// num == true
+```
+
+### 循环语句
+
+#### if循环
+
+```javascript
+if（bool表达式1）{
+  console.log("如果bool表达式为true则执行")
+}
+else if（bool表达式2）{
+  console.log("如果bool表达式1为false，则执行表达式2，如果为true执行else if")
+}
+else{
+  console.log("如果表达式1和2都为false则执行else")
+}
+```
+
+#### for循环
+
+```javascript
+// 打印 0-10
+for(var i = 0; i <= 10; i++) {
+  console.log(i);
+}
+```
+#### while循环
+
+```javascript
+// 1-100 逢7过
+var a = 1;
+while(a <= 100) {
+  if(a % 7 === 0 || a % 10 === 7) {
+    console.log(a);
+  }
+  a++
+}
+```
+
+#### 跳出循环语句
+
+- break：用于跳出循环，或者终止这层循环语句
+- continue：终止本次循环，立马进入下次循环
+
+### 条件判断语句
+
+#### switch case语句
+
+- case后面可以跟任何类型的数据
+- 如果case后不写break则会执行从正确的case到后面的所有语句
+
+```javascript
+// 例
+var n = window.prompt('请输入周几');
+switch(n){
+  case "周一":
+  case "周二":
+  case "周三":
+  case "周四":
+  case "周五":
+    console.log("工作！");
+    break;
+  case "周六":
+  case "周日":
+    console.log("休息");
+    break;
+}
+```
+
+### typeof
+
+#### typeof
+
+- 可以判断该数据的类型 例：
+```javascript
+var a = "123";
+console.log(typeof(a)); // string
+```
+
+- typeof有六种基本数据类型
+  + 分别是：number，string，boolean，object，undefined，function
+- null对应的类型是object， 数组对应的类型也是object
+- NaN返回的是 number
+- typeof一个未定义的值 不会报错 会返回undefined
+
+```javascript
+typeof(typeof(a)); // string
+// a 未定义，里面的结果是undefined
+// 外层typeof判断里面的值结果为string
+// 由此可知,typeof转化后的值类型为string
+```
+
+### 类型转换
+
+#### 1.显式类型转换
+- Number()
+  + 把括号里的数据转化为number类型的数据
+  + 括号里可以为字符串，true，false
+  + 如果括号里为undefined和字符串里写英文字母和中文 则会打印NaN
+  + true转化为number类型的值为：1；false为：0；null为：0；
+- parseInt(string,radix)
+  + 如果括号里只有第一个数，则把这个数转化为整形的数字类型
+  + 如果有第二个数，radix表示 以radix为基底把这个数以十进制输出
+  + 例如：parseInt("a",16)；就表示把a以十六进制转化，然后10进制输出
+  + 结果就为：11；radix的取值范围是：2-36；
+  + 括号里true、false、null、undefined的值都为NaN；
+  + 例：parseInt("123.9abc")；打印的结果为：数字类型：123；
+  + 他会从头检索，直到发现非数字的停止检索，输出前面抛弃后面
+- parseFloat()
+  + 把括号里的数据转化为浮点类型的数据
+  + 括号里true、false、null、undefined的值都为NaN；
+  + 例：parseFloat("123.9.3abc")；打印结果：数字类型：123.9；
+  + 他从头检索，直到发现除一个小数点外的非数字停止检索，输出前面
+- toString()
+  + 使用方法：var num； num.toString()；
+  + 可以num转换为字符串类型
+  + 如果num的值为null或undefined则会报错
+  + 第二种使用方法：var num=9; num.toString(2);num.toString(radix)
+  + 表示把9（十进制）转换为二进制的数；
+  + radix表示进制的基底取值范围为 2-36
+- String()
+  + 把括号里的数据转化为string类型的数据
+  + 无论里面写什么都会被转化为string的数据
+  + 例：String(true)；打印结果：string：true
+- Boolean()
+  + 把括号里的数据转化为boolean类型的数据
+  + undefined、null、NaN、" "、0、false；这六个值的结果为false
+  + 其余的所有打印结果都为：boolean：true；
+
+#### 2.隐式类型转换
+
+- isNaN()
+  + 在括号里输入数据，判断数据是否为NaN 输出true或false
+  + 其实在里面进行的是Number()显式类型转换，看转换的是NaN输出true，否则输出false
+- ++/--  +/-(正/负)
+  + 例：a++；先把a调用Number()显式类型转换，然后再进行++；
+  + 如果转化后是NaN则 输出的是Number类型的NaN。--同理
+  + +/-  加在数据前面，可以把数据转换为number类型的数据。
+  + 如果转化后是NaN则 输出的是Number类型的NaN。-同理
+- \+
+  + 只要在加号两侧 都会被转成string类型的数据
+- \- * / %
+  + 把符号两边的数据都转化为number类型
+  + 结果的类型为number
+- <，>， >= <=
+  + 如果符号两遍有一个数字一个字符串，则都转化为number类型进行比较
+  + 如果符号两遍都是string类型 则比较ASC码顺序
+
+#### 3.比较特殊的类型转换
+
+```javascript
+undefined > 0  // false
+undefined < 0  // false
+undefined == 0  // false
+null > 0  // false
+null < 0  // false
+null == 0  // false
+undefined == null // true
+```
+
+- 唯一一个不等于自己的数
+```javascript
+console.log(NaN == NaN); // false
+```
+
+- 不发生类型转换
+  + ===
+    1. 三个等号代表绝对相等，必须两边一样才能相等（NaN除外）
+    2. 它的左右两遍不会产生隐式类型转换，例：1 === "1"（false）
+  + !==
+    1. 代表绝对不相等，例：1 !== "1"(true);
+
+### 函数
+
+#### 函数的声明
+
+```javascript
+function theFirstName(){//声明函数
+  console.log("Hello World")//代码块
+}
+theFirstName(); //调用函数 
+//函数名符合小驼峰命名法规则。例：theFirstName
+//theFirstName.name=theFirstName
+```
+
+#### 函数表达式
+```javascript
+var demo = function () {
+  console.log('hello world')
+}
+```
+
+#### 参数
+```javascript
+function sum(a, b) {
+  var c = a + b;
+  console.log(c)
+}
+sum(1,2);
+```
+
+#### arguments(实参列表)
+
+```javascript
+function sum(a){
+  //系统会默认创建数组arguments保存实参（实参列表） 可以用for循环来访问其他实参
+  for(var i = 0; i < arguments.length; i++){
+      console.log(arguments[i]);
+  }
+  //打印的结果为 1 2 3 
+}
+sum(1,2,3)
+//用 函数名.length 来求形参的个数
+//用 arguments.length 求实参的个数
+```
+
+#### 返回值
+
+- return 代表终止函数 return 后面的数据为返回值
+- 如果函数没有 return一个数据，那么每个函数的默认返回值是undefined
+```javascript
+function sum(a，b){
+  var result = a + b;
+  return result;//代表终止函数并且返回result的值
+}
+
+var i = sum(1,2);//结果为3
+```
+
+### 预编译
+
+#### 递归
+
+- 递归的两个重要思路
+  1. **找规律**
+  2. **找出口**
+
+```javascript
+// 例如：求n的阶乘
+//  n! = n * (n-1)!
+function mul(n) {
+  if(n == 1) {
+    return 1
+  }
+  return n * mul(n-1)
+}
+```
+
+#### JS的执行过程
+
+1. 语法分析（通篇扫描代码，寻找低级错误（例如语法错误））
+2. 预编译
+3. 解释执行（解释一行，执行一行）
+
+#### 预编译的两条规则
+
+- 函数声明整体提升
+```javascript
+// 因为预编译 会把函数整体默认放在最前面 所以这个test可以访问到
+test();//控制台打印结果为 123
+function test(){
+  console.log(123);
+}
+```
+
+- 变量声明提升
+```javascript
+// 预编译会把变量的声明提升 所以打印出来的结果为 undefined
+console.log(a);//结果为 Undefined
+var a = 123;
+```
+
+#### 预编译过程
+
+- window就是全局的一个域
+1. imply global 暗示全局变量：即任何变量，如果变量未经声明就赋值，此变量就归全局变量所有。
+
+```javascript
+a = 123；
+console.log(window.a);//值为123 window代表全局
+```
+
+2. 一切声明的**全局变量**，全是window的属性
+
+```javascript
+var a = 123;
+var b = 223;
+console.log(window.a);//123
+console.log(window.b);//223
+//局部变量 ↓
+function test(){
+    var ae = gd = 123;
+}
+test();
+/*
+控制台 window.ae 结果为 undefined
+       window.ge 结果为 123
+*/
+//因为ae在函数内被声明  是局部变量
+//ge 在函数内没有声明 直接赋值 所以是全局变量
+```
+
+### 作用域
+- [[scope]]:指的就是我们所说的作用域，其中存储了运行期的上下文的集合。
+- 作用域链:[[scope]]中所存储的执行期上下文对象的集合，这个集合呈链式链接，我们把这种链式链接叫做作用域链。
+- 查找变量：从作用域链的顶端依次向下查找
+
+### 闭包
+
+- 当内部函数被保存到外部的时候，将会生成闭包。闭包会导致原有的作用域链不释放，造成内存泄漏。
+
+```javascript
+// 案例
+function test() {
+	var arr = [];
+	for(var i = 0; i < 10; i ++){
+		arr[i] = function () {
+			document.write(i + " ");
+		}
+	}
+	return arr;
+}
+var myArr = test() ;
+for(var j = 0; j < 10; j++){
+	myArr[j]();
+}
+//打印结果为 10 10 10 10 10 10 10 10 10 10
+// 如果要求的是需要打印 0-9 那么就需要立即执行函数
+```
+
+#### 立即执行函数
+
+- 针对初始化功能的函数
+- 立即执行函数：只能使用一次，以后无法找到，无法使用，使用第一次之后立即释放空间。
+- 适用于只需要执行一次，而且占用空间大的函数
+
+```javascript
+//要求打印0-9 
+//解决方法：用立即执行函数，在for循环内形成10个立即执行函数
+function test() {
+	var arr = [];
+	for(var i = 0; i < 10; i ++){
+    (function (j) {
+      arr[i] = function () {
+          document.write(j + " ");
+      }
+    } (i))
+	}
+	return arr;
+}
+var myArr = test();
+for(var j = 0; j < 10; j++){
+	myArr[j]();
+}
+//打印结果为 0 1 2 3 4 5 6 7 8 9
+```
+
+### 对象
+
+#### 创建对象
+
+```javascript
+var obj = {
+  name: 'c',
+  sex: 'boy',
+  age: 19,
+  health: 100,
+  drink: function () {
+    console.log('i am drink')
+    this.health ++ // 使用this可以访问同一个对象的属性
+  }
+}
+```
+
+#### 对象的增删改查
+
+```javascript
+// 1、增
+// 对象名.属性 = 值 即可添加 
+obj.like = "game";
+// 2、删
+// delete 对象名.属性 即可删除
+delete obj.sex;
+// 3、改
+// 在原有的属性上进行修改即可 对象名.原有属性 = 新值
+obj.age = 20;
+// 4、查
+// 对象名.属性
+obj.name //结果为c
+// 查询一个未经声明赋值的属性时不会报错 会打印undefined
+```
+
+#### 对象的创建方法
+
+```javascript
+// 1. 对象字面量
+var obj = {}
+// 2. 构造函数
+  // 系统内置对象
+  var obj = new Object()
+  // 自定义构造函数
+  function Person () {
+    this.name = 'c'
+    this.age = 18
+  }
+  var person1 = new Person()
+  var person2 = new Person()
+// person1 和 person2 不相等，但是都有构造函数Person的属性
+```
+
+#### 构造函数的内部原理
+1. 在函数体最前面隐式的加上this = {}
+2. 执行this.xxx = xxx
+3. 隐式的返回this
+
+#### 借用构造函数
+
+- 解决原型中包含引用值带来问题的解决方法
+
+```javascript
+function Father () {
+    this.color = ['red','pink','skyblue'];
+}
+function Son () {
+    
+}
+Son.prototype = new Father();
+
+let s1 = new Son();
+s1.color.push = 'black';
+console.log(s1.color);
+//["red", "pink", "skyblue", "black"]
+let s2 = new Son();
+console.log(s2.color);
+//["red", "pink", "skyblue", "black"]
+
+//借用构造函数
+function Father () {
+    this.colors = ['red','pink','skyblue'];
+}
+
+function Son () {
+    Father.call(this);
+}
+
+let s1 = new Son();
+s1.colors.push('black');
+console.log(s1.colors);
+// ["red", "pink", "skyblue", "black"]
+
+let s2 = new Son();
+console.log(s2.colors);
+//["red", "pink", "skyblue"]
+```
+
+### 原型&原型链
+
+参考链接：[知乎](https://zhuanlan.zhihu.com/p/35790971)
+
+1. 原型的定义：原型是function对象的一个属性，他定义了构造函数制造出的对象的公共祖先。通过该构造函数产生的对象，可以继承该原型的属性和方法。原型也是对象。
+
+- 构造函数名.prototype 就是原型 可以往原型后面加属性和方法
+- 之后构造函数产生的对象，可以继承原型的方法和属性
+
+2. 利用原型的特点，可以提取共有属性
+
+```javascript
+// 有相同属性的话可以属性给 prototype 
+// prototype加属性也可以这样
+/** 构造函数名.prototype = {
+    name : "c";
+    sex : "boy";
+} */
+// 这种写法如果在添加值的时候用的话就会产生和原有的prototype不一样的问题
+// 简而言之，对象方式赋值的话，在创建新对象之后赋值，就没有作用
+// 但是用Person.prototype.name = "sunny"; 赋值 就一直有作用,因为修改的是原型链
+// 原因是因为 new Person出来的实例指向的是 proto 指向的是Person
+/** Person.prototype = {} 这样赋值 会改Person 的prototype的指向
+ *  但是已经实例出来的对象的 __proto__指向没有发生变化
+ * */ 
+// eg：
+Person.prototype.name = "sunny";
+function Person() {
+    //var this = {__proto__ : Person.prototype}
+}
+var person = new Person();
+Person.prototype = {
+  name : "cherry";
+}
+//打印person.name 结果为 "sunny";
+```
+
+3. prototype 和 \_\_proto\_\_
+
+- **每个对象都有一个__proto__属性，并且指向他的prototype原型对象**
+- **每个构造函数都有一个prototype原型对象**
+  + **prototype原型对象里的constructor指向构造函数本身**
+  + **constructor属性是系统定义的，但是可以被更改**
+
+#### 原型链
+
+1. 定义：当试图访问一个对象的属性时，它不仅仅在该对象上搜寻，还会搜寻该对象的原型，以及该对象的原型的原型，依次层层向上搜索，直到找到一个名字匹配的属性或到达原型链的末尾。
+
+```javascript
+var arr = [1,2,3]
+arr.valueOf() // [1,2,3]
+```
+
+2. 以上代码查找valueOf大致流程
+  - 当前实例对象obj，查找obj的属性和方法，找到后返回
+  - 没有找到，通过obj.\_\_proto\_\_，找到obj的构造函数的prototype并且查找上面的属性和方法，找到后返回。
+  - 没有找到的话，把 Array.prototype 当做obj，重复以下步骤
+  - 如果一直找不到的情况下，会查找到原型链的终点，最后查找到Object.prototype时
+Object.prototype.\_\_proto\_\_ === null，意味着查找结束
+
+### 继承
+
+- 继承是指对一个对象直接使用另外一个对象的属性和方法
+
+#### 继承属性
+
+```javascript
+// 创建一个Person类
+function Person (name, age) {
+  this.name = name
+  this.age = age
+}
+
+// 方法定义在构造函数的原型上
+Person.prototype.getName = function () {
+  console.log(this.name)
+}
+```
+
+- 添加一个新类，student，继承Person的所有属性并拥有新的属性grade
+
+```javascript
+function Student (name, age, grade) {
+  Person.call(this, name, age),
+  this.grade = grade
+}
+
+// 属性的继承是通过在一个类内执行另一个类的构造函数，通过 call 指定this 为当前执行
+// 环境，这样就可以实现继承另一个构造函数的所有属性。
+```
+
+#### 继承方法
+
+- 方法都定义在prototype里面，那其实我们只需要把Person.prototype的备份赋值给Student.prototype即可
+
+```javascript
+Student.prototype = Object.create(Person.prototype)
+// Object.create()就是新建一个对象，使用现有的对象赋值给新建对象的__proto__
+
+// 如果直接赋值 也就是 Student.prototype = Person.prototype
+// 也是可以达成继承方法的目的，但是他们两个就会变成引用关系，也就是说如果要修改了
+// Student.prototype，同时也会修改Person.prototype
+```
+
+- **在给Teacher类添加方法时，应该在修改prototype以后，否则会被覆盖掉，原因是赋值前后的属性值是不同的对象。**
+
+- **构造函数的prototype里有一个constructor属性，他会指向构造函数本身，但是因为是继承了Person构造函数，所以Student的constructor属性指向的是Person构造函数。**
+
+- **为了避免出现指向紊乱的情况，所以需要修正一下Student的constructor指向**
+
+> Student.prototype.constructor = Student
+
+- **继承方法只需要两步**
+
+```javascript
+Son.prototype = Object.create(Father.prototype)
+Son.prototype.constructor = Son
+```
+
+#### hasOwnProperty
+
+- 当访问一个不存在的属性时候，js会遍历整个原型链，对性能会有所损耗，所以js提出了`hasOwnProperty()`方法作为解决方案，
+
+- hasOwnProperty() 方法会返回一个布尔值，指示对象自身属性中是否具有指定的属性（也就是，是否有指定的键）。
+
+- **注：即使属性的值是 null 或 undefined，只要属性存在，hasOwnProperty 依旧会返回 true。**
+
+### call&apply 
+
+- 两者的作用：改变this的指向
+
+```javascript 
+//借用别人的方法实现自己的功能
+function Person(name,age){
+    this.name = name;
+    this.age = age;
+}
+var person = new Person('s',10);
+var obj = {
+    
+}
+Person.call(obj , 'c' , 100);//用call方法时 
+// 调用Person的方法 实现obj的功能
+// 第一位是表面this的指向，之后是实参
+// 打印obj的结果为 name：c  age ：100;
+```
+
+- 两者的区别
+
+```javascript
+// call  对象后面 需要把实参按照形参的个数传进去
+Person.call(obj , 'c' , 100)
+// apply 对象后面 需要传一个arguments（数组/实参列表）
+Person.apply(obj , ['c' , 100])
+```
+
+### 实现简易的链式调用
+
+```javascript
+var obj = {
+  eat : function () {
+      console.log("i am eating");
+      return  this;//对象里的this指的是第一人称的我，在这也就是obj
+  },
+  drink : function () {
+      console.log("i am dringking");
+      return  this;
+  },
+  sleep : function () {
+      console.log("i am sleeping")
+      return  this;
+  },
+}
+obj.eat().drink().sleep();
+//这样可以是因为 在执行完后 会返回this 然后继续执行
+```
+
+### 属性的表示方法
+
+1. `obj.name` 常用的表示方法，在使用时会隐式的使用第二种方法来访问属性
+2. `obj['name']`  两种方法基本上一样，但是第二种更灵活，[]内必须是字符串形式
+
+```javascript
+//想要实现输入几就输出第几个人的名字， 就用第二种 然后字符串拼接
+var callName = {
+  name1 : {name: "aaa"},
+  name2 : {name: "bbb"},
+  name3 : {name: "ccc"},
+  callName : function (num) {
+      return this["name" + num];
+  }
+}
+console.log(callName.sayName(1));//aaa
+console.log(callName.sayName(2));//bbb
+console.log(callName.sayName(3));//ccc
+```
+
+### 对象的枚举
+
+- for...in
+
+```javascript
+var obj = {
+  name = "aa",
+  age = 123,
+  sex = "male",
+  height = 180
+}
+for(var key in obj){
+    console.log(key);//这个可以查看对象内都有什么属性 都是string类型
+    console.log(obj[key]);//这个可以查看对象所有属性的值
+    //这里的[ ] 不用加 "" 的原因是因为要把key 当成一个变量来看
+    //如果加了"" 则会打印出等于属性个数的 undefined
+    //for in 会将里面的属性每个都查看一遍 把key当成变量 属性时string类型
+    //所以可以直接打印出值
+}
+```
+
+- hasOwnProperty
+
+```javascript
+//每个对象都有一个这样的方法 来判断这个属性是自身的属性还是原型的属性
+//如果手动改变 __proto__ 的属性则在枚举时会打印出来
+//解决方法：
+var obj = {
+    name = "aa",
+    age = 123,
+    sex = "male",
+    height = 180
+    __proto__ = {
+        lastName : "cccc";
+    }
+}
+for(var key in obj){
+  if(obj.hasOwnProperty(key)){//这个方法需要传进去参数 参数就是string类型的属性
+      //这个方法打印出来的是一个bool值 则需要用if来判断 
+      //如果是自己属性就是true就会打印出来 如果不是就不会打印
+      console.log(obj[key]);
+  }
+}
+```
+
+- in
+
+```javascript
+//查看这个属性是不是属于这个对象  使用方法:
+console.log("age" in obj);//true
+console.log("lastName" in obj); //true
+//in 不管是自己的对象还是自己原型的对象 都会返回true
+```
+
+- instanceof
+
+```javascript
+// instanceof 运算符用于检测构造函数的 prototype 属性是否出现在某个实例对象的原型链上。
+function Person () {   
+}
+var person = new Person();
+console.log(person instanceof Person);//true
+//A instanceof B (理论上:看 A对象 是不是 B构造函数构造函数造出来的)
+//实际上：看 A对象的原型链上 有没有 B的原型   例如下面的
+console.log(person instanceof Object);//true
+console.log([] instanceof Object);//true
+//区别object和 array
+//1.constructor
+var obj = {};
+console.log([].constructor);//Array
+console.log(obj.constructor);//Object
+//2.instanceof
+console.log([] instanceof Array);//true
+console.log(obj instanceof Array);//false
+//3.call toString
+console.log(Object.prototype.toString.call([]));//"object Aarry"
+console.log(Object.prototype.toString.call(obj));//"object Object"
+//在这个里面本来this指向的是prototype前面的对象
+//然后使用call改变了this的指向 改变到了括号内的数据
+```
+
+### this
+
+1. **函数预编译的过程中：this => window**
+2. **全局作用域：this => window**
+3. **call/apply可以改变this的指向**
+4. **obj.a(); a函数里面的this指向obj**
+
+```javascript
+var name = "222";
+var a = {
+  name : "111",
+  say : function () {
+    console.log(this.name);
+  }
+}
+var fun = a.say;
+fun();//222
+a.say();//111
+
+var b ={
+  name : "333",
+  say : function (fun) {
+    fun();//这个fun是形参传入的实参是 a.say这个函数体，
+    //由于没有人调用 走预编译 所以this指向的是全局
+  }
+}
+b.say(a.say);//222
+b.say = a.say;
+b.say();//333
+```
+
+
+
+```javascript
+
+```
