@@ -868,6 +868,282 @@ b.say = a.say;
 b.say();//333
 ```
 
+### 克隆
+
+- 指的是把一个对象里的所有属性都克隆到另一个对象中，且两者没有引用关系。
+
+- 思路
+  1. 遍历对象 for...in 循环取出来所有属性
+  2. typeof 判断是不是原始值(判断类型)
+  3. 判断引用值是数组还是对象 最好选择toString()判断
+  4. 建立相应的数组或者对象
+  5. 递归
+
+```javascript
+obj = {
+    name : "abb",
+    sex : "male",
+    card : ['visa', 'master'],
+    eat : {
+    	food : "cc",
+    	drink : {
+    		water : 'bb'
+    	}
+    }
+}
+obj1 = {
+
+}
+function deepClone(origin, target){
+  var target = target || {}, //如果有target就用前面的 如果没有就新建一个空对象
+      toStr = Object.prototype.toString,
+      arrStr = "[object Array]";
+  for (var prop in origin) {
+    if(origin.hasOwnProperty(prop)){//为了防止调用原型上的属性
+      //让属性绝对不等于空  值是引用值
+      if(origin[prop]	!== "null" &&  typeof(origin[prop]) == 'object'){
+        if(toStr.call(origin[prop]) == arrStr){
+          target[prop] = [];
+        }
+        else{
+          target[prop] = {};
+        }
+        deepClone(origin[prop], target[prop]);
+        //用到递归 如果对象或数组内还有对象或数组的话 就继续来
+      }
+      else{
+        target[prop] = origin[prop];//如果是原始值 则直接赋值 
+      }
+    }
+  }
+  return target;
+}
+```
+
+### 数组
+
+- 定义数组的方法
+
+```javascript
+//1. 构造器方法 new Array(length/content)
+var arr = new Array(1,2,3);
+var arr = new Array(10) // 这种方法如果只传一位参数的话，会将他识别为长度
+console.log(arr) // [empty x 10];
+
+new Array(4).toString(); // 结果：' , , , '
+/**new Array(4) 执行的结果是empty x 4 转化为字符串就是 ' , , , ' */
+
+// 2. 数组字面量
+var arr = [1,2,3]
+```
+
+- 数组的读写和length
+
+```javascript
+var arr = []
+console.log(arr[5]) // 不可以溢出读 不会报错，但值为 undefined
+arr[10] = '555' // 可以溢出写，没有第11位的数组会扩展到11位，之前的位数的值都为undefined
+
+/** length是每个数组的属性，他会返回一个数组中的元素个数 */
+var arr = [1, 2, 3]
+console.log(arr.length) // 3
+```
+
+#### 常用的方法
+
+- 会改变原数组的
+
+```javascript
+// 1. arr.push() 在数组的最后一位添加数据
+var arr = []
+arr.push(1,2,3) // 可以push多位，arr = [1,2,3]
+
+// 以下演示方法 arr默认 = [1, 2, 3]
+// 2. arr.pop() 把数组的最后一位剪切出来
+var a = arr.pop() // a = 3  arr = [1, 2]
+
+// 3. arr.shift() 把数组的第一位剪切出来
+var a = arr.shift() // a = 1 arr = [2, 3]
+
+// 4. arr.unshift() 在数组的第一位添加数据
+arr.unshift(-1, 0) // 不限制添加位数， arr = [-1, 0, 1, 2, 3]
+
+// 5. arr.reverse() 让原数组发生逆转，不会产生新数组
+arr.reverse() // arr = [3, 2, 1]
+
+// 6. arr.splice(从第几位开始，截取多少位的长度，在切口处添加的新数据) 三个参数
+// 最后一个参数可以不写，最后一个参数可以添加多位 
+var arr = [1,2,3,4,5]
+var arr2 = arr.splice(0, 4) // arr = [5]  arr2 = [1,2,3,4]
+arr.splice(1,0,6,7) // arr = [5,6,7]
+
+// 7. arr.sort() 排序方法，括号内可以定义一个函数来排序，如果不定义，默认比较ASCII码
+// 括号内定义个函数规则
+// 1). 必须有两个参数
+// 2). 看返回值
+//    -返回值为负数时 (a-b) 从小到大，正序
+//    -返回值为正数时 (b-a) 从大到小，倒序
+//    -返回值为0 不排序
+//升序
+var arr = [5,1,3,2,8,10];
+arr.sort(function (a, b){
+  if(a > b){
+      return 1;
+  }
+  else{
+      return -1;
+  }
+  //也可以简化为 return a - b;
+}) // arr = [1, 2, 3, 5, 8, 10]
+```
+
+- 不能改变原数组
+
+```javascript
+//concat, join <==> split, toString, slice
+//arr.concat(arr1); 把后面的数组拼接到前面的数组 产生一个新的数组 不会影响原数组
+var arr = [1,2,3,4,5],
+    arr1 = [6,7,8];
+let arr3 = arr.concat(arr1);// arr3 = [1,2,3,4,5,6,7,8];
+//arr.toString (); 把数组内的东西变为字符串
+arr.toString(); "1,2,3,4,5"
+//arr.slice() 截取数组 但不影响原数组
+//没有参数 arr.slice()  会把整个数组截取下来
+//一个参数 arr.slice(从该位开始截取到最后)
+//两个参数 arr.slice(从该位开始截取，截取到该位)
+var a = arr.slice(1,3);
+console.log(a);//[2,3];
+
+//join <==> split 两个互逆的方法
+//join 是让数组用这个东西连接为字符串 arr.join("")括号内规定是字符串
+//split是让字符串按这个东西拆分为数组
+var arr = [1,2,3,4,5];
+var str = arr.join("-");//"1-2-3-4-5"
+str.split("-");//["1","2","3","4","5"]
+```
+
+- 常用的循环方法(包含ES6新增)
+
+```javascript
+// 1. arr.forEach((ele, index, array) => {}) 对数组的每个元素都执行一次给定的函数
+// forEach 不会更改原数组  返回值为undefined
+/** 循环方法的参数大多都是这三个
+ * ele: 数组正在处理的元素
+ * index: 数组正在处理的元素的下标
+ * array: forEach 方法正在处理的数组（原数组）
+ */
+var arr = [1,2,3]
+arr.forEach(ele => {
+  ele = ele * 3 
+  console.log(ele)// 三次打印 3 6 9
+})
+// arr = [1,2,3] // 原数组不会改变
+// 但是如果元素组的元素是引用数据类型，那么就会发生改变
+var arr = [{num: 1},{num: 2},{num: 3}]
+arr.forEach(ele => {
+  ele.num = ele.num * 3
+  console.log(ele.num) // 三次打印 3 6 9
+})
+// arr = [{num: 3},{num: 6},{num: 9}]
+// 引用数据类型发生了改变 因为只是改了引用数据类型里面的属性，并没有改动内存地址
+// 注： 除了抛出异常以外，没有办法中止或跳出 forEach() 循环。如果你需要中止或跳出循环，请使用其他循环方法
+
+
+// 2. arr.filter((ele,index,array) => {]})
+// filter()方法，会返回通过所提供函数的测试的所有数组元素
+// filter() 不会改变原数组。
+// 一个新的、由通过测试的元素组成的数组，如果没有任何数组元素通过测试，则返回空数组。
+var arr = ['aaa', 'bb', 'ccc', 'ddddd', 'eeee']
+var result = arr.filter(i => i.length >= 4)
+console.log(result) // ['ddddd', 'eeee']
+
+
+// 3. arr.map((ele, index, array) => {})
+/** map()方法创建一个新数组，这个数组由提供执行函数的返回值组成
+ * 返回值：一个新数组，每个元素都是回调函数的返回值
+ * map不更改他的原数组本身
+ */
+var arr = [1,2,3]
+var map1 = arr.map(ele => ele * 3)
+console.log(map1) // [3,6,9]
+
+
+// 4. arr.reduce((previousValue, currentValue, index, array) => {}, initialValue)
+/** 回调函数参数： previousValue：上一次回调函数的返回值 第一次调用时 若指定了初始值
+ * initialValue,则值为initialValue,否则为数组的第0位 arr[0]
+ * 
+ * currentValue: 数组正在处理的元素，在第一次调用时，若指定了初始值initialValue，
+ * 则值为 arr[0]，否则为 arr[1]
+ * 
+ * index: 数组中正在处理的元素的索引。若指定了初始值 initialValue，则起始索引号为 0，
+ * 否则从索引 1 起始。
+ * 
+ * array: 用于遍历的数组
+ * 
+ * reduce的参数(可选参数)：initialValue 用来指定第一次调用时的值
+ * 
+ * reduce用于遍历数组元素，每一步都将当前元素的值与上一步的计算结果相加
+ * （上一步的计算结果是当前元素之前所有元素的总和）——直到没有更多的元素被相加。
+ * 返回值：使用“reducer”回调函数遍历整个数组后的结果。
+ *  
+ */
+var arr = [1,2,3,4]
+var initialValue = 1;
+var sum = arr.reduce((previousValue, currentValue) => {
+  return previousValue + currentValue
+}, initialValue)
+console.log(sum) // 11
+/** 指定了初始值initialValue = 1  
+ * 所以顺序是 1(previousValue = initialValue) + 1(arr[0]) + 2 + 3 + 4
+*/
+var arr = [1,2,3,4]
+var sum = arr.reduce((previousValue, currentValue) => {
+  return previousValue + currentValue
+})
+console.log(sum) // 10
+/** 没有指定了初始值initialValue
+ * 所以顺序是 1(previousValue = arr[0]) + 2(arr[1]) + 3 + 4
+*/
+
+
+// 5. arr.every((ele, index, array) => {})
+/** 测试一个数组内的元素是否都能通过回调函数的测试，
+ * 如果回调函数每次返回的值都是 true 则 every返回值为 true 否则为 false
+ * 注： 如果是一个空数组调用此方法，那么任何情况下都会返回 true
+ */
+var arr = [1,2,3,4]
+var flag = arr.every(ele => ele < 5)
+console.log(flag) // true
+
+
+// 5. arr.some((ele, index, array) => {})
+/** 数组中至少有一个元素通过测试就会返回 true 所有元素都没有通过返回值是false
+ *  注：空数组调用此方法，任何情况下都返回 false
+ */
+var arr = [1,2,3]
+var flag = arr.some(ele => ele % 2 == 0)
+console.log(flag) // true
+
+
+// 6. arr.find((ele, index, array) => {})
+/** 返回数组中满足回调函数的第一个元素的值
+ *  数组中第一个满足所提供测试函数的元素的值，如果找不到 返回undefined
+ */
+var arr = [1,2,3]
+var num = arr.find(ele => ele % 2 == 0)
+console.log(num) // 2
+
+
+// 6. arr.findIndex((ele, index, array) => {})
+/** 返回数组中满足回调函数的第一个元素的索引
+ *  数组中第一个满足所提供测试函数的元素的索引，如果找不到 返回-1
+ */
+var arr = [1,2,3]
+var index = arr.findIndex(ele => ele % 2 == 0)
+console.log(index) // 1
+```
+
+
 
 
 ```javascript
