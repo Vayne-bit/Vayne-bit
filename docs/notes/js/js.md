@@ -922,7 +922,7 @@ function deepClone(origin, target){
 
 ### 数组
 
-- 定义数组的方法
+- **定义数组的方法**
 
 ```javascript
 //1. 构造器方法 new Array(length/content)
@@ -937,7 +937,7 @@ new Array(4).toString(); // 结果：' , , , '
 var arr = [1,2,3]
 ```
 
-- 数组的读写和length
+- **数组的读写和length**
 
 ```javascript
 var arr = []
@@ -949,9 +949,9 @@ var arr = [1, 2, 3]
 console.log(arr.length) // 3
 ```
 
-#### 常用的方法
+### 数组的常用方法
 
-- 会改变原数组的
+- **会改变原数组的**
 
 ```javascript
 // 1. arr.push() 在数组的最后一位添加数据
@@ -997,7 +997,7 @@ arr.sort(function (a, b){
 }) // arr = [1, 2, 3, 5, 8, 10]
 ```
 
-- 不能改变原数组
+- **不能改变原数组**
 
 ```javascript
 //concat, join <==> split, toString, slice
@@ -1022,7 +1022,7 @@ var str = arr.join("-");//"1-2-3-4-5"
 str.split("-");//["1","2","3","4","5"]
 ```
 
-- 常用的循环方法(包含ES6新增)
+- **常用的循环方法(包含ES6新增)**
 
 ```javascript
 // 1. arr.forEach((ele, index, array) => {}) 对数组的每个元素都执行一次给定的函数
@@ -1143,9 +1143,562 @@ var index = arr.findIndex(ele => ele % 2 == 0)
 console.log(index) // 1
 ```
 
-
-
+- **数组去重**
 
 ```javascript
-
+// 还有其他方法，这里不做展示
+let arr2 = [];
+for(let i = 0; i < arr.length; i++){
+    if(arr2.indexOf(arr[i]) === -1){
+        arr2.push(arr[i]);
+    }
+}
 ```
+
+- **类数组**
+  1. 类似数组，但并不是数组
+  2. 常见的类数组有 函数的arguments、使用getElement(s)(id,name,class...)获取的NodeList
+  3. 不能使用数组的方法
+  4. 有length属性，有callee属性
+
+```javascript
+// 类数组 转 数组
+var arrayLike = {
+   0: "java",
+   1: "C++",
+   2: "javascript",
+   length: 3
+}
+// 还有其他方法
+Array.from(arrayList) // ['java', 'C++', 'javascript']
+```
+
+
+### 对象常用的方法
+
+```javascript
+/** 1. Object.assign(target, sources) 
+ * 会将对象内所有可枚举的属性从一个或多个源对象复制到目标对象
+ * target: 目标对象，也就是修改后的返回值
+ * sources： 源对象，包含即将被合并的属性
+ * 返回值：目标对象
+ */
+// 常规使用
+var target = {
+  name: 'Cat'
+}
+var source = {
+  age: 12
+}
+let result = Object.assign(target,source)
+console.log(result,target) // {name: 'Cat', age: 12}
+console.log(result === target) // true
+
+// Object.assign()不能深拷贝对象，假如源对象是一个对象的引用，它仅仅会复制其引用值。
+let obj = {
+  name: 'aa',
+  c: {
+    d: '111'
+  }
+}
+
+let obj2 = Object.assign({},obj)
+obj2.name = 'aa222222'
+obj2.c.d = '222'
+console.log(obj) // {name: 'aa', c: { d: '222'}}
+console.log(obj2) // {name: 'aa222222', c: { d: '222'}}
+
+
+/** Object.keys(obj)
+ * 该方法会遍历对象并返回由自身属性名（key）组成的数组
+ * obj: 要返回其枚举自身的属性的对象
+ * 
+ */
+let obj = {
+  name : 'ccc',
+  age: 11
+}
+let resultArr = Object.keys(obj)
+console.log(resultArr) // ['name', age]
+
+/** Object.values(obj)
+ * 该方法会遍历对象并返回由自身属性值（value）组成的数组
+ * obj: 要返回其枚举自身的属性的对象
+ * 
+ */
+let obj = {
+  name : 'ccc',
+  age: 11
+}
+let resultArr = Object.values(obj)
+console.log(resultArr) // ['ccc', 11]
+```
+
+### try...catch、严格模式
+
+#### try...catch 用来捕捉错误
+
+```javascript
+try{
+  console.log("a");
+  console.log(b);
+  console.log("c");
+}
+catch(e){// 捕捉到错误的时候会有一个对象 打印的是错误信息
+  console.log(e) // ReferenceError: b is not defined
+}
+```
+
+- **Error六种错误对应的信息**
+  1. EvalError: eval( )的使用与定义不一致
+  2. RangeError : 数值越界
+  3. ReferenceError : 非法或不能识别的引用数值
+  4. SyntaxError ： 发生语法解析错误
+  5. TypeError ： 操作数类型错误
+  6. URLError ：URL处理函数使用不当
+
+#### ES5严格模式
+
+- 开启严格模式："user strict"（不管是全局还是局部都必须写在第一行）
+ + 不再兼容es3的一些不规则语法。使用全新的es5规范。
+ + 两种用法：
+  1. 全局严格模式
+  2. 局部函数内严格模式（推荐）
+ + 就是一行字符串，不会对不兼容严格模式的浏览器产生影响。
+
+- 作用
+  + 不支持with、arguments.callee、function.caller，变量赋值前必须声明，局部this必须被赋值 
+  + （Person.call（null/undefined）赋值什么就是什么），拒绝重复属性和参数
+
+
+### DOM
+
+#### DOM的说明
+- DOM ==> Document Object Model
+- DOM定义了表示和修改文档所需要的方法。DOM对象即为宿主对象，由浏览器厂商定义，用来操作html和xml功能的一类对象的集合。也有人称DOM是对HTML以及XML的标准编程接口 
+
+### DOM的基本操作
+
+- 查
+```javascript
+// 查看元素节点
+// document代表整个文档
+document.getElementById()//不区分id大小写而且也返回匹配name属性的元素
+document.getElementsByTagName()//标签名
+document.getElementsByName()//只有部分标签name可生效(表单，表单元素，img，iframe)
+document.getElementsByClassName()//类名 ie8及以下的版本没有，可以多个class一起
+document.querySelector()//css选择器 ie7及以下版本没有
+document.querySelectorAll()//css选择器ie7及以下版本没有
+```
+
+- 遍历节点树(会包含文本节点)
+```JavaScript
+// 下面的都是 node(节点).属性名 即可使用 eg: div.childNodes => div的所有子节点
+parentNode => 父节点（最顶端的parentNode为#document）
+childNodes => 子节点们
+firstChild => 第一个子节点
+lastChild  => 最后一个子节点
+nextSibling => 后一个兄弟节点
+previousSibling => 前一个兄弟节点
+```
+
+- 基于元素节点树的遍历
+
+```javascript
+// 下面的都是 node(节点).属性名 即可使用 eg: div.childNodes => div的所有子节点
+parentElement =>  返回当前元素的父元素节点（ie9不兼容）
+children =>  只返回当前元素的元素子节点
+node.childElementCount === node.children.length当前元素节点的子元素个数（ie9不兼容）
+firstElementChild => 返回的是第一个元素节点（ie9不兼容）
+lastElementChild =>  返回的是最后一个元素节点（ie9不兼容）
+nextElementSibling => 后一个兄弟元素（ie9不兼容）
+previousElementSibling => 前一个兄弟元素（ie9不兼容）
+```
+
+- 节点的类型
+```javascript
+获取节点类型：nodeType 只能返回数字 然后数字与下面的类型对应
+元素节点 ———— 1
+属性节点 ———— 2
+文本节点 ———— 3
+注释节点 ———— 8
+document ———— 9 
+DocumentFragment ———— 11
+```
+
+- 节点的四个属性
+
+```javascript
+nodeName ———— 元素的标签名，以大写形式表示，只读
+nodeValue ———— Text节点和Comment（注释）节点的文本内容，可读写
+nodeType ———— 返回该节点的类型，只读
+attributes ———— Element节点的属性集合
+节点的一个方法Node.hasChildNodes();查看这个节点里面有没有子节点 返回true或false
+```
+
+- 增
+```javascript
+document.createElement("div");//在js里创建一个元素，括号里是什么就创建什么元素
+document.createTextNode("aa");//在js里创建一个文本节点
+document.createComment("This is comment")//在js创建一个注释节点
+document.createDocumentFragment();//创建一个碎片节点
+```
+
+- 插
+```javascript
+ParentNode.appendChild();//ParentNode是父节点的意思(插入形式类似push)
+//appendChild()操作是剪切操作，例一个div和span是兄弟结构，把span放入div中，
+//他俩就成了父子结构
+
+//如果想要把js里创建的元素添加到body里，那么可以这样
+var div = document.createElement("div");//在js里创建一个div
+document.body.appendChild(div);//把他发送给body里
+
+ParentNode.insertBefore(a,b);//在父节点的里面插入a,b元素，a元素一定在b元素之前
+```
+
+- 删
+```javascript
+parent.removeChild();//父级元素.removeChild(),括号里写需要删除的子元素
+//removeChild是把这个子元素剪切出来，可以保存
+//remove是把这个元素直接销毁，保存不了
+```
+
+- 替换
+```javascript
+parent.replaceChild(new,origin);//把新的元素替换到老的元素位置上
+//这个也是把老的元素剪切出来，可以保存
+```
+
+- Element节点的一些属性
+```javascript
+innerHTML
+//如果直接写div.innerHTML 那么读取出来的是div里的html元素
+//也可以赋值 div.innerHTML="<span>123</span>";这样就是在div的html里添加了一个
+//span元素，如果div里有元素的话，那么就会覆盖 只会显示span元素
+innerText（老版本火狐不兼容）/textContent（老版本IE不兼容）
+//直接写 div.innerText 那么读取出来的是，div里的文本内容
+//赋值的话 也是会直接覆盖掉div里的所有内容
+//innerText和textContent效果一样
+```
+
+- Element节点的一些方法
+```javascript
+元素.setAttribute("class","demo");//可以在这个元素上添加class="demo"
+元素.getAttribute("class");//可以把这个元素的值给取出来
+//  上面两个属性 也可以有方法 是写入的方法
+元素.innerHTML('要写入元素节点内的内容（可以带转化标签）')
+元素.innerText('要写入元素节点内的内容（不能转化标签）')
+// 如果想要更改class或者id的值可以直接 还有input里的value值
+div.className="";
+div.id="";
+input.value = '';
+```
+
+### 获取窗口属性和DOM尺寸
+- 熟悉就好，不需要记
+
+- 查看滚动条距离
+
+```javascript
+window.pageXOffset/pageYOffset//分别表示横向距离/纵向距离
+//IE8及以下不兼容
+
+document.documentElement.scrollLeft/scrollTop
+document.body.scrollLeft/scrollTop
+//这两个兼容IE8及以下 但是兼容性混乱，用时需要两个值相加
+//因为这两个值，一个值有数的话，另一个值肯定是0
+```
+
+- 查看窗口尺寸
+
+```javascript
+window.innerWidth/innerHeight//表示现在窗口的宽/高
+//IE8及以下不兼容
+
+document.documentElement.clientWidth/clientHeight
+//标准模式下，任意浏览器都兼容
+
+document.body.clientWidth/clientHeight
+//适用于怪异模式下的浏览器
+```
+
+- 查看元素的几何尺寸
+
+```javascript
+任意元素.getBoundingClientRect();
+//兼容性很好
+//该方法返回一个对象，对象里有left，right，top，bottom等属性。left和top代表
+//该元素左上角的X Y坐标，right和bottom代表右下角的X Y坐标
+//height和width属性老版本IE没有
+//返回的结果不是实时的    
+//被下面的完爆
+```
+
+- 查看元素的尺寸和位置
+
+```javascript
+//查看元素的尺寸  dom表示任意元素
+dom.offsetWidth, dom.offsetHeight
+
+//查看元素位置
+dom.offsetLeft,dom.offsetTop
+//对于无定位元素的父级元素，返回相对于文档的坐标，对于有定位的父级元素，返回相对
+//于最近的有定位的父级元素的坐标
+
+dom.offsetParent
+//返回最近的有定位的父级，如果没有，返回body。body.offsetParent返回null
+```
+
+- 让滚动条滚动
+
+```javascript
+window上的三个方法
+window.scroll(),window.scrollTo(),window.scrollBy()
+//三个方法功能类似，用法都是传入x，y坐标，实现让滚动条滚动到指定位置
+//区别：第一种和第二种没有任何区别，scrollBy()会在之前数据基础上做累加
+```
+
+### 关于DOM方法继承的操作
+
+1. getElementById方法定义在Document.prototype上，即Element节点上不能使用
+2. getElementsByName方法定义在HTMLDocument.prototype上，即非html中的document不能使用（xml，document ，Element）
+3. getElementsByTagName方法定义在Document.prototype和Element.prototype上
+4. HTMLDocument.prototype定义了一些常用属性，document.body和document.head分别指代HTML文档中的`<head><body>`标签
+5. Document.prototype上定义了documentElement属性，指代文档的根元素，在HTML文档中，他总是指代`<html>`元素（document.documentElement）
+6. getElementsByClassName、`querySelectorAll`、`querySelector`在Document.prototype，Element.prototype类中均有定义
+
+### 定时器
+
+- setInterval(); 
+
+```javascript
+setInterval(function () {} , 1000);
+//每隔1000毫秒就执行前面的函数一次，无休止
+```
+
+- setTimeout();
+
+```javascript
+setTimeout(function () {} , 1000);
+//推迟1000毫秒再执行，而且只会执行一次    
+```
+
+- clearInterval();
+
+```javascript
+// 用来清除setInterval定时器
+var i = 0;
+var timer = setInterval(function () {
+    console.log(i++)
+    if(i > 10 ){//当i=10时 清除这个计时器
+      clearInterval(timer);//timer
+    }；
+} , 1000)
+```
+
+- clearTimeout();
+
+```javascript
+// 用法和上面基本类似 用来清除 setTimeout()
+var i = 0;
+var timer = setTimeout(function () {
+    console.log(2)
+} , 1000)
+clearInterval(timer);
+```
+
+- 全局对象window上的方法，内部函数this指向window
+
+```javascript
+//也可以这样来写
+setInterval("console.log(a)",1000);//会每隔1000毫秒执行一次a
+//会自动把逗号前面的字符串识别为js代码
+```
+
+### 事件
+
+- **如何为元素绑定事件**
+
+1. ele.on(xxx) = function (event) {}; (xxx表示事件的类型，例如click点击事件)
+
+```javascript
+div.onclick = function () {
+  console.log('aaa'); // 点击div打印 aaa
+};
+```
+- 兼容性很好，但是一个元素的同一事件上只能绑定一个处理程序
+
+2. ele.addEventListener(type, fn, options);
+
+```javascript
+/** 可以为一个事件绑定多个处理程序
+ * 三个参数 type：表示事件类型
+ * fn：回调函数
+ * options: 一个布尔值，表示是否在捕获阶段调用事件处理程序
+ */
+div.addEventListener('click', function () {
+  console.log('aaa'); // 点击div打印 aaa
+}, false)
+```
+
+- **事件处理程序的运行环境**
+1. ele.onclick = function (event) {}
+ - **程序的this指向的是DOM元素本身**
+2. ele.addEventListener(type, fn, options);
+ - **程序的this指向的是DOM元素本身**
+
+- **解除事件处理程序**
+
+- 注：若绑定匿名函数，则无法解除，使用第二种解除就不能有匿名函数，因为他们可以绑定多个事件
+```javascript
+ele.onclick = null/false
+ele.removeEventListener(type, fn, options)
+```
+
+
+### 事件处理模型-冒泡&捕获
+
+#### 冒泡&捕获
+- 事件冒泡
+  + **代码结构上(非视觉上) 嵌套关系的元素**，会存在事件冒泡的功能，即同一事件，自**子元素冒泡向父元素**。（自底向上）
+
+- 事件捕获
+  + **代码结构上（非视觉上）嵌套关系的元素**，会存在事件捕获功能，即同一事件，自**父元素捕获至子元素**（事件源元素）。（自顶向下）
+
+```javascript
+// 默认的基本上都是冒泡事件
+// 捕获的开启方法 就是使用addEventListener绑定事件
+ele.addEventListener('click',function() {}， true);
+// 把最后的变为true就是捕获模型 如果是false就是冒泡模型
+```
+
+- 一个对象的一个事件类型上面绑定的一个处理函数只能遵循一个处理模型
+- 如果在一个对象的事件上绑定两个时间，一个冒泡、一个捕获、那么触发顺序为：先捕获 => 后冒泡
+- **focus、blur、change、submit、reset、select等事件不冒泡
+
+#### 取消冒泡、阻止默认事件
+
+- 取消冒泡
+  + event.stopPropagation() (event代表事件对象)
+- 阻止默认事件(例如右键菜单事件 document.oncontextmenu)
+  + 默认事件：表单提交、a标签跳转、右键菜单
+  1. return false;  以对象属性方式注册的事件才生效，ele.on(xxx) 
+  2. event.preventDefault(); W3C标注，IE9以下不兼容
+
+#### 事件委托
+
+- **利用事件冒泡和事件源对象进行处理**
+- 优点
+  1. 性能 不需要循环所有元素一个个绑定事件
+  2. 灵活 当有新的子元素时不需要重新绑定事件
+
+```javascript
+//点那个li就输出那个li的内容
+<ul>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+    <li>5</li>
+    <li>6</li>
+    <li>7</li>
+    <li>8</li>
+    <li>9</li>
+    <li>10</li>
+</ul>
+<script type="text/javascript">
+  var ul = document.getElementsByTagName("ul")[0];
+  ul.onclick = function(event) {
+    var target = event.target;
+    console.log(target.innerText);
+  }
+</script>
+```
+
+### 事件分类
+
+- 鼠标事件
+  + click 点击事件（其实等于mousedown+mouseup）
+  + contextmenu 右键菜单事件。
+  + mousedown 鼠标按键按下事件。
+  + mouseup 鼠标按键松开事件。
+  + mousemove 鼠标移动事件。
+  + mouseover 鼠标移到元素之上事件。
+  + mouseout 鼠标从元素移开事件。
+  + mouseenter 当鼠标指针移动到元素上时触发。
+  + mouseleave 当鼠标指针移出元素时触发
+  + dblclick 当用户双击某个对象时触发。
+- 使用button来区分鼠标按键 0/1/2
+  + 只有`mousedown`和`mouseup`事件可以用
+- DOM标准规定：click事件只能监听左键，要区分鼠标三个键 只能通过`mousedown`和`mouseup`事件区分
+```javascript
+event.button = 0;// 代表左键按下
+event.button = 1;// 代表滚轮键按下
+event.button = 2;// 代表右键按下
+```
+
+- 键盘事件
+  + keydown 在键盘上按下某个键时触发。如果按住某个键，会不断触发该事件
+  + keyup 按下某个键盘键并释放时触发。如果按住某个键，会不断触发该事件。
+  + keypress释放某个键盘键时触发。该事件仅在松开键盘时触发一次。
+  + 触发顺序：keydown > keypress > keyup
+- keydown 和 keypress的区别
+  + keydown可以响应任意的键盘按键，keypress只可以响应字符类按键
+  + keypress返回ASCII码，可以转化为相应字符
+
+```javascript
+// keypress的事件对象event上有一个 charCode 可以返回ASCII码
+String.fromCharCode(event.charCode);
+// String方法上有一个静态属性 可以把括号里的ASCII码转为字符 
+```
+- 文本操作时间
+  + input 在input输入框内 输入和删除都会执行一次事件 只要内容变化 就触发事件
+  + change 在input输入框内 聚焦发生改变 失去焦点触发事件 对比聚焦和失去焦点 里面的状态是否改变，如果改变就 触发事件， 否则不触发
+  + focus 在鼠标聚焦时触发事件
+  + blur 在鼠标失去焦点时触发事件
+
+- 窗口操作类（window上的事件）
+  + scroll  当滚动条一滚动 事件就触发（window.onscroll）
+  + load  当整个页面全部就绪时 才触发的事件（window.onload）
+
+### JSON,js加载时间线
+
+#### JSON
+- JSON是一种传输数据的格式（以对象为样板，本质上是对象，但用途有别，对象就是本地用的，json是用来传输的）
+
+```javascript
+var person= {
+  "name" : 'cc',
+  "age" : 11
+};// json里的属性名必须是string
+```
+
+```javascript
+JSON.parse(person);  //string ==>  json 字符串转json
+JSON.stringify(person); // json ==> string json转字符串
+```
+
+#### 异步加载
+- **js加载的缺点：加载工具方法没必要阻塞文档，过多js加载会影响页面效率，一旦网速不好，那么整个网页将等待js加载而不进行后续渲染工作。有些工具方法需要按需加载，用到再加载，不用不加载。**
+
+- JS异步加载的方案
+
+async 异步加载，加载完就执行，async只能加载外部脚本，不能把js写在script里面。
+```html
+<script type = "text/javascript" src = "base.js"  async= "async"></script>
+```
+
+#### JS加载的时间线
+- defer 是IE浏览器里面声明异步加载script标签的属性
+1. 创建Document对象，开始解析web页面。解析HTML元素和他们的文本内容后添加Element对象和Text节点到文档中。这个阶段document.readyState = "loading"。
+2. 遇到link外部css，创建线程加载，并继续解析文档。
+3. 遇到script外部js，并且没有设置async、defer，浏览器加载，并阻塞，等待js加载完成并执行该脚本，然后继续解析文档。
+4. 遇到script外部js，并且设置有async、defer，浏览器创建线程加载（异步加载），并解析文档。对于async属性的脚本，脚本加载完成后立即执行。（异步禁止使用document.write();（会造成body里所有东西的丢失，只显示write里的东西））
+5. 遇到img等，先正常解析dom结构，然后浏览器异步加载src，并继续解析文档。
+6. 当文档解析完成，document.readyState = 'interactive';
+7. 文档解析完成之后，所有设置defer的脚本会按照顺序执行。（注意：与async的不同，但同样进制document.write();）
+8. document对象触发DOMContentLoaded事件，这也标志着程序执行从同步脚本执行阶段，转化为事件驱动阶段。
+9. 当所有async的脚本加载完成并执行后，img等加载完成后，document.readyState = 'complete'，window对象触发load事件。
+10. 从此，以异步响应方式处理用户输入，网络事件等；
+

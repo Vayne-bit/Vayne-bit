@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: /image/cat.jpg
+heroImage: /image/duck.jpeg
 # actionText: 快速上手 →
 # actionLink: /zh/guide/
 tagline: 学习笔记
