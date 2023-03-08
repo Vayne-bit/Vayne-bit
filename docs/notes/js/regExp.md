@@ -181,7 +181,7 @@ console.log(str.replace(reg,"$2$2$1$1"));
 //按split()里的正则表达式的规则来分割，如果有子表达式则会返回子表达式
 ```
 
-### 两个正则的例子
+### 几个正则的例子
 
 - the-first-name 改为小驼峰写法：theFirstName
 

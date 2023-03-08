@@ -17,6 +17,19 @@ module.exports = [
             link: '/notes/js/js'
           },
         ]
+      },
+      {
+        text: '框架',
+        items: [
+          {
+            text: 'Vue',
+            link: '/notes/vue/vue'
+          },
+          {
+            text: 'Uniapp',
+            link: '/notes/Uniapp/Uniapp'
+          },
+        ]
       }
     ]
   },
